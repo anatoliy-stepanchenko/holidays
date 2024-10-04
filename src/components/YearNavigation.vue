@@ -17,14 +17,17 @@ function handleYearChange(year: number) {
 
 <template>
   <div>
-    <button
+    <app-button
+      class="btn_year"
+      severity="secondary"
+      rounded
       v-for="year in years"
       :key="year"
       :class="{ selected: year === selectedYear }"
       @click="handleYearChange(year)"
     >
       {{ year }}
-    </button>
+    </app-button>
   </div>
 </template>
 
@@ -34,7 +37,7 @@ function handleYearChange(year: number) {
   color: bisque;
 }
 
-button {
+.btn_year {
   margin-right: 10px;
 }
 </style>

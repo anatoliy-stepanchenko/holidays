@@ -69,11 +69,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <h1>Home Page</h1>
-    <div>
+  <div class="container">
+    <div class="country_search_list">
       <app-input-text v-model="searchTerm" placeholder="Search for a country..." />
       <ul>
+        Countries List
         <li v-for="country in filteredCountries" :key="country.countryCode">
           <router-link :to="{ name: 'Country', params: { id: country.countryCode } }">
             {{ country.name }}
@@ -81,8 +81,30 @@ onMounted(async () => {
         </li>
       </ul>
     </div>
-    <RandomCountriesWidget :randomCountries="randomCountries" :isLoading="isLoading" />
+    <RandomCountriesWidget
+      class="countries_widget"
+      :randomCountries="randomCountries"
+      :isLoading="isLoading"
+    />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.country_search_list {
+  flex: 1;
+  max-width: 33%;
+  padding: 1rem;
+}
+
+.countries_widget {
+  flex: 2;
+  max-width: 66%;
+  padding: 1rem;
+}
+</style>

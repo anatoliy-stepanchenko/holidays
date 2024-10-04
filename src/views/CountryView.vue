@@ -22,7 +22,7 @@ function changeYear(year: number) {
 </script>
 
 <template>
-  <div>
+  <div class="country-view">
     <h1>{{ countryName }}</h1>
     <button @click="goToHome">На головну</button>
     <div v-if="isLoading">Loading...</div>
@@ -34,7 +34,27 @@ function changeYear(year: number) {
 </template>
 
 <style scoped>
+.country-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
 button {
-  margin: 5px;
+  margin: 10px;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 </style>
