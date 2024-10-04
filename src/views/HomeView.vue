@@ -8,6 +8,8 @@ interface Country extends BaseCountry {
   nextHoliday: string | null
 }
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
 const searchTerm = ref('')
 const allCountries = ref<Country[]>([])
 const filteredCountries = computed(() =>
@@ -21,7 +23,7 @@ const isLoading = ref(true)
 
 async function fetchAllCountries() {
   try {
-    const response = await axios.get('https://date.nager.at/api/v3/AvailableCountries')
+    const response = await axios.get(`${apiBaseUrl}/AvailableCountries`)
     allCountries.value = response.data.map((country: BaseCountry) => ({
       ...country,
       nextHoliday: null
@@ -43,7 +45,7 @@ async function fetchRandomCountries() {
     }
     for (const country of selectedCountries) {
       const nextHolidayResponse = await axios.get(
-        `https://date.nager.at/api/v3/NextPublicHolidays/${country.countryCode}`
+        `${apiBaseUrl}/NextPublicHolidays/${country.countryCode}`
       )
 
       const nextHoliday = nextHolidayResponse.data.length > 0 ? nextHolidayResponse.data[0] : null
