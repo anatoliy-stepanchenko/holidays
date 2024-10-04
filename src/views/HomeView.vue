@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+import type { Country as BaseCountry } from '../interfaces'
+import RandomCountriesWidget from '../components/RandomCountriesWidget.vue'
 
-interface Country {
-  name: string
-  countryCode: string
+interface Country extends BaseCountry {
   nextHoliday: string | null
 }
 
@@ -22,9 +22,8 @@ const isLoading = ref(true)
 async function fetchAllCountries() {
   try {
     const response = await axios.get('https://date.nager.at/api/v3/AvailableCountries')
-    allCountries.value = response.data.map((country: any) => ({
-      name: country.name,
-      countryCode: country.countryCode,
+    allCountries.value = response.data.map((country: BaseCountry) => ({
+      ...country,
       nextHoliday: null
     }))
   } catch (error) {
@@ -34,11 +33,12 @@ async function fetchAllCountries() {
 
 async function fetchRandomCountries() {
   try {
-    const selectedCountries = []
+    const selectedCountries: Country[] = []
     while (selectedCountries.length < 3) {
       const randomIndex = Math.floor(Math.random() * allCountries.value.length)
-      if (!selectedCountries.includes(allCountries.value[randomIndex])) {
-        selectedCountries.push(allCountries.value[randomIndex])
+      const randomCountry = allCountries.value[randomIndex]
+      if (!selectedCountries.includes(randomCountry)) {
+        selectedCountries.push(randomCountry)
       }
     }
     for (const country of selectedCountries) {
@@ -81,19 +81,7 @@ onMounted(async () => {
         </li>
       </ul>
     </div>
-
-    <div>
-      <h2>Random Countries and Their Next Holidays</h2>
-      <div v-if="isLoading">Loading...</div>
-      <div v-else>
-        <ul>
-          <li v-for="country in randomCountries" :key="country.countryCode">
-            <strong>{{ country.name }}</strong
-            >: {{ country.nextHoliday }}
-          </li>
-        </ul>
-      </div>
-    </div>
+    <RandomCountriesWidget :randomCountries="randomCountries" :isLoading="isLoading" />
   </div>
 </template>
 
