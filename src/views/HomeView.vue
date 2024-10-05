@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-import type { Country as BaseCountry } from '../interfaces'
+import type { Country } from '../interfaces'
 import RandomCountriesWidget from '../components/RandomCountriesWidget.vue'
-
-interface Country extends BaseCountry {
-  nextHoliday: string | null
-}
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
@@ -24,7 +20,7 @@ const isLoading = ref(true)
 async function fetchAllCountries() {
   try {
     const response = await axios.get(`${apiBaseUrl}/AvailableCountries`)
-    allCountries.value = response.data.map((country: BaseCountry) => ({
+    allCountries.value = response.data.map((country: Country) => ({
       ...country,
       nextHoliday: null
     }))
